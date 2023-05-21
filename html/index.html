@@ -29,6 +29,14 @@
               .navbar {
             border-bottom: 1px solid rgba(0, 0, 0, 0.1); 
               }
+                .card {
+                max-width: 17rem;
+              }
+
+              .card-img-top {
+                height: 200px;
+                object-fit: cover;
+              }
       </style>
   </head>
   <body>
@@ -55,7 +63,7 @@
             </ul>
             <div class="col-md-3 text-end">
                 <button type="button" class="btn btn-outline-primary me-2">Login</button>
-                <button type="button" class="btn btn-custom">Sign-up</button>
+                <a href="https://example.com" class="btn btn-custom">sign-up</a>
               </div>
             </div>
         </div> 
@@ -152,7 +160,7 @@
             <div class="col-lg-6 mx-auto">
               <p class="lead mb-4">In an increasingly complex and data-driven world, our cutting-edge AI solutions empower medical professionals, patients, and healthcare organizations to make informed decisions, improve patient outcomes, and enhance the overall healthcare experience.</p>
               <div class="d-grid gap-2 d-sm-flex justify-content-sm-center mb-5">
-                <button type="button" class="btn btn-custom btn-lg px-4 me-sm-3">Check Symptoms <i class="bi bi-arrow-right"></i></button>
+                <a href="https://symptomate.com/interview/0" class="btn btn-custom btn-lg px-4 me-sm-3">Check Symptoms<i class="bi bi-arrow-right"></i></button></a>
               </div>
             </div>
             <div class="" style="max-height: 60vh;">
@@ -165,7 +173,7 @@
         </section>
 
         <!--feature -->
-    <section class="px-4 pt-5 my-5">
+    <section class="px-4 pt-5 my-3">
         <div class="container col-xxl-8 px-4 py-5">
             <div class="row flex-lg-row-reverse align-items-center g-5 py-5">
               <div class="col-10 col-sm-8 col-lg-6">
@@ -175,13 +183,99 @@
                 <h1 class="display-5 fw-bold text-body-emphasis lh-1 mb-3">Responsive left-aligned hero with image</h1>
                 <p class="lead">Quickly design and customize responsive mobile-first sites with Bootstrap, the world’s most popular front-end open source toolkit, featuring Sass variables and mixins, responsive grid system, extensive prebuilt components, and powerful JavaScript plugins.</p>
                 <div class="d-grid gap-2 d-md-flex justify-content-md-start">
-                  <button type="button" class="btn btn-custom btn-lg px-4 me-md-2">Book an appointment</button>
-                  <button type="button" class="btn btn-outline-secondary btn-lg px-4">Default</button>
+                  
+                  <a href="https://booking.appointy.com/Jeffery" class="btn btn-custom">Book an appointment</a>
+                  <button type="button" class="btn btn-outline-secondary btn-lg px-4">Available clinics</button>
                 </div>
               </div>
             </div>
           </div>
     </section>
+
+    <!--Carousel-->
+<section>
+  <div class="container col-xxl-8 px-3 py-3">
+    <div class="px-4 pt-4 my-4 text-center mb-2">
+      <h2 class="display-4 fw-bold text-body-emphasis mb-3 p-md-3">Our patient care journey visualized</h2>
+      <p class="lead mb-5"> Our patient care journey is broken down into 5 simple steps</p>
+
+    <div id="carouselExampleIndicators" class="carousel slide" data-bs-ride="carousel" >
+      <div class="carousel-inner mx-auto">
+        <div class="carousel-item active">
+          <div class="row">
+            <div class="col-md-4">
+              <div class="card">
+                <img src="/images/Mosquito bite-pana.png" class="card-img-top" alt="mosquito bite">
+                <div class="card-body">
+                  <h5>Patient at home</h5>
+                  <p class="card-text">It is Saturday night. A patient is experiencing unusual symptoms. Eventually, they search their symptoms online. What they find is ambiguous. One of the search results proposes using beyondhealth's symptom checking tool.</p>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-4">
+              <div class="card">
+                <img src="/images/Online test-pana.png" class="card-img-top" alt="mosquito bite">
+                <div class="card-body">
+                  <h5>Symptom assessment</h5>
+                  <p class="card-text">By adding their symptoms and answering questions, the patient quickly discovers possible causes, as well as their triage level. Results are linked with clinics available in their area.</p>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-4">
+              <div class="card">
+                <img src="/images/Date picker-pana.png" class="card-img-top" alt="mosquito bite">
+                <div class="card-body">
+                  <h5>Appointment booking</h5>
+                  <p class="card-text">From the results screen, the patient easily moves to the clinic’s booking site. The search criteria, based on the symptom check results, are already set, and the user journey is short and efficient. The patient decides to book an appointment</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="carousel-item">
+          <div class="row">
+            <div class="col-md-4 ">
+              <div class="card">
+                <img src="/images/Doctors-pana.png" class="card-img-top" alt="mosquito bite">
+                <div class="card-body">
+                  <h5>Diagnosis & Clinical Plans </h5>
+                  <p class="card-text">The patient easily shares their test results with healthcare providers through the platform. This enables healthcare professionals to make accurate differential diagnoses and develop tailored clinical plans. The streamlined process improves clinical decisions and reduces wait times.</p>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-4 ">
+            <div class="card">
+              <img src="/images/Oncology patient-pana.png" class="card-img-top" alt="mosquito bite">
+              <div class="card-body">
+                <h5>Emergency Services</h5>
+                <p class="card-text">In cases of emergencies, our platform ensures swift access to emergency services. With just a few clicks, patients can connect with emergency responders who can provide immediate assistance. This feature is designed to prioritize critical situations and ensure prompt medical attention when every second counts</p>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-4 ">
+            <div class="card">
+              <img src="/images/Profile data-pana.png" class="card-img-top" alt="mosquito bite">
+              <div class="card-body">
+                <h5>Continued Care</h5>
+                <p class="card-text">Our platform facilitates ongoing communication and collaboration between patients and healthcare professionals. Through secure messaging and virtual consultations, patients can easily connect with their healthcare providers, ask questions, and receive guidance on managing their health conditions.</p>
+              </div>
+            </div>
+          </div>
+          </div>
+        </div>
+      </div>
+      <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="prev">
+        <span class="visually-hidden">Previous</span>
+</button>
+<button class="carousel-control-next" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="next">
+<span class="carousel-control-next-icon" aria-hidden="true"></span>
+<span class="visually-hidden">Next</span>
+</button>
+</div>
+    </div>
+  </div>
+</section>
+
 
     <!--Sign up CTA-->
     <section class="px-4 pt-4 my-4">
