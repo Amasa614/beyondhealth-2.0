@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>playground</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <div class="profile">
+            <p>Jeffery Crentsil</p>
+        </div>
+        <div class="sidebar">
+            <div class="sidebar-menu">
+                <div class="sidebar-header"><h3>Dashboard</h3></div>
+                <div class="menu">
+                    <ul>
+                        <li>Home</li>
+                        <li>Reports</li>
+                        <li>DDx and clinical Plans</li>
+                        <li>Settings</li>
+                    </ul>
+                    <div class="sidebar-logout">Log out</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="divider"></div>
+        <div class="divider-1"></div>
+
+        <div class="main-body">
+            <div class="text-area">
+
+                <div class="input-area">
+                    <div class="examples">
+                        <p>Try an example:</p>
+                        <div class="example-1">Chest Pain DDx</div>
+                        <div class="example-2">ADHF Clinical plan</div>
+                    </div>
+                    <div class="input-header">
+                        <p>Main complaint</p>
+                    </div>
+                    <textarea id="myInput" placeholder="Type here"></textarea>
+                    <div class="buttons">
+                        <button class="primary" id="differential">Differential diagnosis</button>
+                        <button class="secondary" id="clinical">Clinical plan</button>
+                        <button class="submit" id="submit" onclick="generateResults()">Generate</button>
+                    </div>
+                    <div class="output-container">
+                      <p id="myOutput" class="text-left" style="line-height: 1.4;"></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const API_KEY = "";
+const submitButton = document.querySelector('#submit');
+const outputText = document.getElementById('myOutput');
+const differentialButton = document.querySelector('#differential');
+const clinicalButton = document.querySelector('#clinical');
+
+let selectedMode = ''; // Variable to store the selected mode: 'differential' or 'clinical'
+
+function generateResults() {
+  const inputText = document.getElementById('myInput').value;
+
+  let prompt = ''; // Variable to store the prompt based on the selected mode
+
+  if (selectedMode === 'differential') {
+    prompt = `Write a detailed Differential diagnosis and include medical references for: ${inputText}`;
+  } else if (selectedMode === 'clinical') {
+    prompt = `Write a detailed clinical plan for ${inputText}`;
+  } else {
+    prompt = inputText; // No mode selected, use the input as is
+  }
+
+  const options = {
+    method: 'POST',
+    headers: {
+      'Authorization': `Bearer ${API_KEY}`,
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({
+      model: "gpt-3.5-turbo",
+      messages: [{ role: "user", content: prompt }],
+      max_tokens: 1000,
+      temperature: 0.3
+    })
+  };
+
+  outputText.textContent = ''; // Clear the output text
+
+  fetch('https://api.openai.com/v1/chat/completions', options)
+    .then(response => response.json())
+    .then(data => {
+      console.log(data);
+      if (outputText) {
+        const formattedOutput = formatOutput(data.choices[0].message.content);
+        outputText.innerHTML = formattedOutput;
+        outputText.innerHTML = formattedOutput;
+        outputContainer.style.display = 'block';
+      }
+    })
+    .catch(error => {
+      console.error(error);
+      // Handle any errors that occur during the API request
+    });
+}
+
+function formatOutput(output) {
+  // Add line breaks between paragraphs
+  output = output.replace(/\n/g, "<br>");
+
+  // Apply formatting based on specific patterns
+  output = output.replace(/\*\*(.*?)\*\*/g, "<span class='text-bold'>$1</span>");
+  output = output.replace(/_(.*?)_/g, "<span class='text-italic'>$1</span>");
+
+  return output;
+}
+
+const myInput = document.getElementById('myInput');
+
+myInput.addEventListener('input', () => {
+  myInput.style.height = 'auto'; // Reset the height to auto
+  myInput.style.height = `${myInput.scrollHeight}px`; // Set the height to match the content
+});
+
+myInput.addEventListener('keydown', (e) => {
+  if (e.key === 'Enter' && !e.shiftKey) {
+    e.preventDefault();
+    myInput.value += '\n';
+  }
+});
+
+submitButton.addEventListener('click', generateResults);
+
+// Event listeners for mode selection buttons
+
+differentialButton.addEventListener('click', () => {
+  selectedMode = 'differential';
+});
+
+clinicalButton.addEventListener('click', () => {
+  selectedMode = 'clinical';
+});
+
+    </script>
+</body>
+</html>
