@@ -4,194 +4,118 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>beyondhealth</title>
-  <link rel="icon" type="image/x-icon" href="/images/image-removebg-preview (2).png">
-
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css">
-    <style>
-      html, body, .parent-element {
-          height: 100%;
-          }
-
-        .btn-custom {
-          background-color: #086972; /* Replace with your desired color */
-          border-color: #086972; /* Replace with your desired color */
-          color: #ffffff; /* Replace with your desired text color */
-        }
-
-        .btn-custom:hover {
-            background-color: #053B40; /* Same as background-color above */
-            border-color: #053B40; /* Same as border-color above */
-            color: white; /* Same as color above */
-         }
-
-         .btn-custom-outline {
-          border-radius: 6px;
-          border-color: #053B40;
-          background-color: white;
-         }
-
-         .btn-custom-outline:hover {
-          background-color: #086972;
-          color: white;
-
-         }
-
-         .custom-active {
-          background-color: #086972; /* Replace with your desired color */
-          border-color: #086972; /* Replace with your desired color */
-          color: #ffffff; /* Replace with your desired text color */
-
-         }
-
-
-         .custom-navbar {
-            background-color: #ffffff; /* Replace with your desired color */
-              }
-
-              .nav-shadow {
-                box-shadow: 0px 0.5px 6px rgba(97, 96, 96, 0.4);
-              }
-              .navbar {
-            border-bottom: 1px solid rgba(0, 0, 0, 0.1); 
-              }
-                .card {
-                max-width: 17rem;
-              }
-
-              .card-img-top {
-                height: 200px;
-                object-fit: cover;
-              }
-
-              .sidebar {
-                background-color: white;
-                overflow-y: auto;
-                border-right: 1px solid rgba(0, 0, 0, 0.1); 
-                height: 100vh;
-
-              }
-              .example-link {
-                  display: inline-block;
-                  padding: 5px 10px;
-                  background-color: lightgrey;
-                  text-decoration: none;
-                  color: black;
-              }
-      </style>
-   
+  <title>Report Editor</title>
+  <link rel="stylesheet" href="https://cdn.quilljs.com/1.3.6/quill.snow.css">
 </head>
 
 <body>
-  <nav class="navbar navbar-expand-lg sticky-top custom-navbar">
-    <div class="container">
-        <a href="#" class="navbar-brand"> <img src="/html/images/image-removebg-preview (1).png" width="150px" alt="logo"></a>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-toggle="#navmenu">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navmenu">
-        <ul class="navbar-nav ms-auto">
-
-          <div class="dropdown">
-            <a href="#" class="d-flex align-items-center link-body-emphasis text-decoration-none dropdown-toggle"
-              data-bs-toggle="dropdown" aria-expanded="false">
-              <img src="https://github.com/mdo.png" alt="" width="32" height="32" class="rounded-circle me-2">
-              <strong>Jeffery Crentsil</strong>
-            </a>
-            <ul class="dropdown-menu text-small shadow">
-              <li><a class="dropdown-item" href="#">Settings</a></li>
-              <li><a class="dropdown-item" href="#">Profile</a></li>
-              <li>
-                <hr class="dropdown-divider">
-              </li>
-              <li><a class="dropdown-item" href="#">Sign out</a></li>
-            </ul>
-          </div>
-        </ul>
-    </div> 
-</nav>
-    <div class="container-fluid min-height-100">
-        <div class="row">
-  <div class="col-md-2 p-0">
-    <div class="sidebar d-flex flex-column" style="height: calc(100vh - 56px); overflow-y: auto;">
-      <a href="/" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto link-body-emphasis text-decoration-none">
-        <svg class="bi pe-none me-2" width="30" height="32">
-          <use xlink:href="#bootstrap"></use>
-        </svg>
-        <span class="fs-4">Dashboard</span>
-      </a>
-      <hr>
-      <ul class="nav nav-pills flex-column">
-        <li class="nav-item">
-          <a href="#" class="nav-link custom-active" aria-current="page">
-            <svg class="bi pe-none me-2" width="16" height="16"></svg>
-            Home
-          </a>
-        </li>
-        <li>
-          <a href="#" class="nav-link link-body-emphasis">
-            <svg class="bi pe-none me-2" width="16" height="16"></svg>
-            Reports
-          </a>
-        </li>
-        <li>
-          <a href="#" class="nav-link link-body-emphasis">
-            <svg class="bi pe-none me-2" width="16" height="16"></svg>
-            Clinical AI
-          </a>
-        </li>
-      </ul>
+  <div class="container">
+    <h1>Report Editor</h1>
+    <div id="toolbar">
+      <button class="ql-bold"></button>
+      <button class="ql-italic"></button>
+      <button class="ql-underline"></button>
+      <button class="ql-strike"></button>
+      <button class="ql-link"></button>
     </div>
-            </div>
-            <div class="col-md-9 justify-content-center">
-                <div class="main-body">
-                    <div class="text-area">
-                        <div class="note">
-                            <p>Note: BeyondHealth AI is an advanced tool under development for healthcare professionals and medical researchers. It is not intended for general use or to provide medical advice. Its purpose is to assist trained professionals in generating accurate diagnoses, treatment plans, and conducting medical research.</p>
-                        </div>
-                        <div class="input-instruction">
-                            <p>Enter a clinical problem representation below to generate either a DDx or clinical plan.</p>
-                        </div>
-                        <div class="input-area">
-                          <div class="examples">
-                            <div class="row">
-                                <div class="col">
-                                    <p>Try an example:</p>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col">
-                                    <div class="example-1">Chest Pain DDx</div>
-                                </div>
-                                <div class="col">
-                                    <div class="example-2">ADHF Clinical plan</div>
-                                </div>
-                            </div>
-                        </div>
-                        
-                            <div class="input-header">
-                                <p>Main complaint</p>
-                            </div>
-                            <textarea class="form-control" id="myInput" placeholder="Type here"></textarea>
-                            <div class="buttons">
-                                <button class="btn btn-primary" id="differential">Differential diagnosis</button>
-                                <button class="btn btn-secondary" id="clinical">Clinical plan</button>
-                                <button class="btn btn-success" id="submit" onclick="generateResults()">Generate</button>
-                            </div>
-                            <div class="output-container">
-                                <p id="myOutput" class="text-left" style="line-height: 1.4;"></p>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="footer-text"></div>
-                </div>
-            </div>
-            </div>
-            </div>
-            <script src="/server/routes/dashboard.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"></script>
+    <div id="editor" style="height: 300px;"></div>
+    <button id="addReportBtn">Add Report</button>
+    <ul id="reportList"></ul>
+  </div>
 
+  <script src="https://cdn.quilljs.com/1.3.6/quill.js"></script>
+  <script>
+    // Initialize Quill editor
+    const editor = new Quill('#editor', {
+      theme: 'snow'
+    });
+
+    // Array to store reports
+    let reports = [];
+
+    // Get references to HTML elements
+    const addReportBtn = document.getElementById('addReportBtn');
+    const reportList = document.getElementById('reportList');
+
+    // Event listener for "Add Report" button
+    addReportBtn.addEventListener('click', function() {
+      const content = editor.root.innerHTML;
+      addReport(content);
+    });
+
+    // Add a new report to the array and update the display
+    function addReport(content) {
+      const report = {
+        content: content
+      };
+      reports.push(report);
+      loadReports();
+      editor.root.innerHTML = '';
+    }
+
+    // Load and display the reports
+    function loadReports() {
+      reportList.innerHTML = '';
+      reports.forEach(function(report, index) {
+        const listItem = document.createElement('li');
+        listItem.innerHTML = report.content;
+        listItem.setAttribute('data-index', index);
+        listItem.classList.add('report-item');
+        listItem.addEventListener('click', function() {
+          editReport(index);
+        });
+        reportList.appendChild(listItem);
+      });
+    }
+
+    // Edit the content of a report
+    function editReport(index) {
+      const report = reports[index];
+
+      // Show the edit controls and prefill the editor with report content
+      editor.root.innerHTML = report.content;
+      const saveChangesBtn = document.createElement('button');
+      saveChangesBtn.textContent = 'Save Changes';
+      saveChangesBtn.addEventListener('click', function() {
+        saveChanges(index);
+      });
+      const deleteReportBtn = document.createElement('button');
+      deleteReportBtn.textContent = 'Delete Report';
+      deleteReportBtn.addEventListener('click', function() {
+        deleteReport(index);
+      });
+      reportList.innerHTML = '';
+      reportList.appendChild(saveChangesBtn);
+      reportList.appendChild(deleteReportBtn);
+    }
+
+    // Save changes to the report
+    function saveChanges(index) {
+      const newContent = editor.root.innerHTML;
+      updateReportContent(index, newContent);
+      loadReports();
+      editor.root.innerHTML = '';
+    }
+
+    // Delete a report
+    function deleteReport(index) {
+      reports.splice(index, 1);
+      loadReports();
+      editor.root.innerHTML = '';
+    }
+
+    // Update the content of a report
+    function updateReportContent(index, newContent) {
+      reports[index].content = newContent;
+    }
+
+// Update the content of a report
+function updateReportContent(index, newContent) {
+  reports[index].content = newContent;
+}
+
+// Load initial reports
+loadReports();
+</script>
 </body>
-
 </html>
-
