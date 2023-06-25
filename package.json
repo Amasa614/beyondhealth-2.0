@@ -1,4 +1,3 @@
-
 {
   "name": "beyondhealth-2.0",
   "version": "1.0.0",
@@ -14,6 +13,7 @@
     "express": "^4.18.2",
     "express-flash": "^0.0.2",
     "express-session": "^1.17.3",
+    "jspdf": "^2.5.1",
     "passport": "^0.6.0",
     "passport-local": "^1.0.0"
   },

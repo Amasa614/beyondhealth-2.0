@@ -1,10 +1,11 @@
 document.addEventListener('DOMContentLoaded', function() {
-  const API_KEY = "";
+  const API_KEY = "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";
   const submitButton = document.querySelector('#submit');
   const outputText = document.getElementById('myOutput');
   const differentialButton = document.querySelector('#differential');
   const clinicalButton = document.querySelector('#clinical');
   const copyButton = document.querySelector('#copy');
+  const downloadPdfButton = document.querySelector('#downloadPdf');
   const ratingContainer = document.querySelector('#rating-container');
   const ratingButtons = document.querySelectorAll('.rating-button');
 
@@ -59,8 +60,14 @@ document.addEventListener('DOMContentLoaded', function() {
         console.log(data);
         if (outputText) {
           const formattedOutput = formatOutput(data.choices[0].message.content);
-          outputText.innerHTML = formattedOutput;
+          outputText.innerHTML = '<div contenteditable="true">' + formattedOutput + '</div>';
           copiedText = formattedOutput; // Store the copied text
+
+          // Show the "Download as PDF" button
+          downloadPdfButton.style.display = 'block';
+
+          // Show the "Copy" button
+          copyButton.style.display = 'block';
         }
       })
       .catch(error => {
@@ -130,24 +137,45 @@ document.addEventListener('DOMContentLoaded', function() {
       button.classList.add('active');
     });
   });
+
+  downloadPdfButton.addEventListener('click', async () => {
+    const { PDFDocument } = PDFLib;
+    const pdfDoc = await PDFLib.PDFDocument.create();
+    const page = pdfDoc.addPage();
+    const { width, height } = page.getSize();
+    
+    const fontSize = 12;
+    const text = outputText.textContent;
+    const lines = text.split('<br>').map(line => line.trim());
+  
+    page.setFontSize(fontSize);
+  
+    let currentY = height - 50;
+    for (const line of lines) {
+      const textWidth = page.getTextWidth(line);
+      const textHeight = fontSize;
+      
+      if (currentY - textHeight < 50) {
+        page = pdfDoc.addPage();
+        currentY = height - 50;
+      }
+      
+      page.drawText(line, {
+        x: (width - textWidth) / 2,
+        y: currentY,
+      });
+      
+      currentY -= textHeight;
+    }
+  
+    const pdfBytes = await pdfDoc.save();
+    const blob = new Blob([pdfBytes], { type: 'application/pdf' });
+  
+    // Create a download link and trigger the download
+    const link = document.createElement('a');
+    link.href = URL.createObjectURL(blob);
+    link.download = 'my_document.pdf';
+    link.click();
+  });
 });
-
-function sendFeedback() {
-  // Get the email and message values from the form
-  var email = document.getElementById('feedbackEmail').value;
-  var message = document.getElementById('feedbackMessage').value;
-
-  // Log the feedback data to the console (simulation)
-  console.log('Email:', email);
-  console.log('Feedback:', message);
-
-  // Clear the form inputs
-  document.getElementById('feedbackEmail').value = '';
-  document.getElementById('feedbackMessage').value = '';
-
-  // Close the modal
-  var feedbackModal = new bootstrap.Modal(document.getElementById('feedbackModal'));
-  feedbackModal.hide();
-}
-
 
