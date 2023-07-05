@@ -1,5 +1,5 @@
 document.addEventListener('DOMContentLoaded', function() {
-  const API_KEY = "process.env.MY_API_KEY";
+  const API_KEY = "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";
   const submitButton = document.querySelector('#submit');
   const outputText = document.getElementById('myOutput');
   const differentialButton = document.querySelector('#differential');
