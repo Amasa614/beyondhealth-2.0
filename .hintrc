@@ -24,6 +24,14 @@
       }
     ],
     "detect-css-reflows/composite": "off",
-    "button-type": "off"
+    "button-type": "off",
+    "compat-api/css": [
+      "default",
+      {
+        "ignore": [
+          "backdrop-filter"
+        ]
+      }
+    ]
   }
 }

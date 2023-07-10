@@ -151,8 +151,8 @@
 
 </head>
 
-<body>
-    <script src="/server/dashboard.js"></script>
+<div id="root" class="light-mode">
+    <script src="/Dashboard/dashboard.js"></script>
     <nav class="navbar navbar-expand-lg fixed-top sticky-top custom-navbar">
         <div class="container">
             <a href="#" class="navbar-brand"> <img src="/html/images/image-removebg-preview (1).png" width="150px"
@@ -187,34 +187,28 @@
             <div class="col-md-2 p-0">
                 <div class="sidebar d-flex flex-column position-fixed">
                     <ul class="nav flex-column mb-auto mt-3 p-md-4">
-                        <li class="nav-item">
-                            <a href="/html/html/about.html" class="nav-link link-body-emphasis">
-                                <i class="bi bi-file-earmark-medical me-2"></i>
-                                Reports
-                            </a>
-                        </li>
-                        <li>
-                            <a href="#" class="nav-link link-body-emphasis">
-                                <i class="bi bi-robot me-2"></i>
-                                Clinical AI
-                            </a>
-                        </li>
-                        <li>
-                            <a href="#" class="nav-link link-body-emphasis">
-                                <i class="bi bi-sliders me-2"></i>
-                                Settings
-                            </a>
-                        </li>
+                      <li class="nav-item">
+                      </li>
+                      <li>
+                        <a href="#" class="nav-link link-body-emphasis">
+                          <i class="bi bi-robot me-2"></i>
+                          Clinical AI
+                        </a>
+                      </li>
                     </ul>
+                    <div class="form-check form-switch ms-4">
+                        <input class="form-check-input" type="checkbox" id="darkModeToggle">
+                        <label class="form-check-label" for="darkModeToggle">Dark Mode</label>
+                      </div>
                     <hr>
                     <a href="#" class="nav-link-1 link-body-emphasis mt-0 mb-3 p-md-4" data-bs-toggle="modal"
-                        data-bs-target="#feedbackModal">
-                        <i class="bi bi-megaphone me-2"></i>
-                        Submit Feedback
+                      data-bs-target="#feedbackModal">
+                      <i class="bi bi-megaphone me-2"></i>
+                      Submit Feedback
                     </a>
-                </div>
+                  </div>
+                  
                 <!-- Feedback Modal -->
-                
                 <div class="modal fade" id="feedbackModal" tabindex="-1" aria-labelledby="feedbackModalLabel"
                     aria-hidden="true">
                     <div class="modal-dialog">
@@ -227,21 +221,22 @@
                             <div class="modal-body">
                                 <form action="https://submit-form.com/RoPujElM">
                                     <div class="mb-3">
-                                        <label for="feedbackEmail" class="form-label">Email</label>
-                                        <input type="email" class="form-control" id="feedbackEmail"
-                                            placeholder="Enter your email">
+                                      <label for="name" class="form-label">Name</label>
+                                      <input type="text" id="name" name="name" class="form-control" placeholder="Name" required="">
                                     </div>
                                     <div class="mb-3">
-                                        <label for="feedbackMessage" class="form-label">Feedback</label>
-                                        <textarea class="form-control" id="feedbackMessage" rows="4"
-                                            placeholder="Enter your feedback"></textarea>
+                                      <label for="email" class="form-label">Email</label>
+                                      <input type="email" id="email" name="email" class="form-control" placeholder="Email" required="">
                                     </div>
-                                </form>
+                                    <div class="mb-3">
+                                      <label for="message" class="form-label">Message</label>
+                                      <textarea id="message" name="message" class="form-control" placeholder="Message" required=""></textarea>
+                                    </div>
+                                    <div class="d-grid">
+                                      <button type="submit" class="btn btn-custom btn-lg">Send</button>
+                                    </div>
+                                  </form>                                  
                             </div>
-                            <div class="modal-footer">
-                                <button type="button" class="btn btn-custom-outline" data-bs-dismiss="modal">Close</button>
-                                <button type="button" class="btn btn-custom" onclick="sendFeedback()">Submit</button>
-                              </div> 
                         </div>
                     </div>
                 </div>
@@ -320,6 +315,127 @@
         </div>
     </div>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="/Dashboard/dashboard.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+  const API_URL = "http://localhost:3000/api/generate-results";
+  const submitButton = document.querySelector('#submit');
+  const outputText = document.getElementById('myOutput');
+  const differentialButton = document.querySelector('#differential');
+  const clinicalButton = document.querySelector('#clinical');
+  const copyButton = document.querySelector('#copy');
+  const downloadPdfButton = document.getElementById('downloadPdf');
+  let selectedMode = '';
+  let copiedText = '';
+
+  function startLoading() {
+    submitButton.disabled = true;
+    submitButton.innerHTML = `<span class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>Generating...`;
+  }
+
+  function stopLoading() {
+    submitButton.disabled = false;
+    submitButton.innerHTML = `Generate <i class="bi bi-robot"></i>`;
+  }
+
+  function generateResults() {
+    const inputText = document.getElementById('myInput').value;
+
+    let prompt = '';
+
+    if (selectedMode === 'differential') {
+      prompt = `Write a detailed Differential diagnosis and include 3 real medical references for: ${inputText}`;
+    } else if (selectedMode === 'clinical') {
+      prompt = `Write a detailed clinical plan for ${inputText}`;
+    } else {
+      prompt = inputText;
+    }
+
+    const requestOptions = {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        inputText: prompt
+      })
+    };
+
+    outputText.textContent = '';
+    startLoading();
+
+    fetch(API_URL, requestOptions)
+      .then(response => response.json())
+      .then(data => {
+        if (outputText) {
+          const formattedOutput = formatOutput(data.output);
+          outputText.innerHTML = '<div contenteditable="true">' + formattedOutput + '</div>';
+          copiedText = formattedOutput;
+
+          downloadPdfButton.style.display = 'block';
+          copyButton.style.display = 'block';
+        }
+      })
+      .catch(error => {
+        console.error(error);
+      })
+      .finally(() => {
+        stopLoading();
+      });
+  }
+
+  function formatOutput(output) {
+    if (output === undefined || output === null) {
+      return '';
+    }
+
+    output = output.replace(/\n/g, "<br>");
+    output = output.replace(/\*\*(.*?)\*\*/g, "<span class='text-bold'>$1</span>");
+    output = output.replace(/_(.*?)_/g, "<span class='text-italic'>$1</span>");
+
+    return output;
+  }
+
+  submitButton.addEventListener('click', generateResults);
+
+  differentialButton.addEventListener('click', () => {
+    selectedMode = 'differential';
+  });
+
+  clinicalButton.addEventListener('click', () => {
+    selectedMode = 'clinical';
+  });
+
+  copyButton.addEventListener('click', () => {
+    if (copiedText) {
+      navigator.clipboard.writeText(copiedText)
+        .then(() => {
+          console.log('Text copied!');
+        })
+        .catch(error => {
+          console.error('Error copying text:', error);
+        });
+    }
+  });
+
+  const myInput = document.getElementById('myInput');
+
+  myInput.addEventListener('input', () => {
+    downloadPdfButton.style.display = 'none';
+    copyButton.style.display = 'none';
+
+    myInput.style.height = 'auto';
+    myInput.style.height = `${myInput.scrollHeight}px`;
+  });
+
+  myInput.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter' && !e.shiftKey) {
+      e.preventDefault();
+      myInput.value += '\n';
+    }
+  });
+});
+  </script>
 
 </body>
 

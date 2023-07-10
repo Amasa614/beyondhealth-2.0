@@ -1,127 +1,83 @@
 document.addEventListener('DOMContentLoaded', function() {
-  const API_KEY = "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";
+  const API_URL = "http://localhost:3000/api/generate-results";
   const submitButton = document.querySelector('#submit');
   const outputText = document.getElementById('myOutput');
   const differentialButton = document.querySelector('#differential');
   const clinicalButton = document.querySelector('#clinical');
   const copyButton = document.querySelector('#copy');
-  const downloadPdfButton = document.querySelector('#downloadPdf');
-  const ratingContainer = document.querySelector('#rating-container');
-  const ratingButtons = document.querySelectorAll('.rating-button');
-
-  let selectedMode = ''; // Variable to store the selected mode: 'differential' or 'clinical'
-  let copiedText = ''; // Variable to store the copied text
-  let rating = null; // Variable to store the rating
+  const downloadPdfButton = document.getElementById('downloadPdf');
+  let selectedMode = '';
+  let copiedText = '';
 
   function startLoading() {
-    submitButton.disabled = true; // Disable the button
+    submitButton.disabled = true;
     submitButton.innerHTML = `<span class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>Generating...`;
   }
 
   function stopLoading() {
-    submitButton.disabled = false; // Enable the button
+    submitButton.disabled = false;
     submitButton.innerHTML = `Generate <i class="bi bi-robot"></i>`;
   }
 
   function generateResults() {
     const inputText = document.getElementById('myInput').value;
 
-    let prompt = ''; // Variable to store the prompt based on the selected mode
+    let prompt = '';
 
     if (selectedMode === 'differential') {
       prompt = `Write a detailed Differential diagnosis and include 3 real medical references for: ${inputText}`;
     } else if (selectedMode === 'clinical') {
       prompt = `Write a detailed clinical plan for ${inputText}`;
     } else {
-      prompt = inputText; // No mode selected, use the input as is
+      prompt = inputText;
     }
 
-    const options = {
+    const requestOptions = {
       method: 'POST',
       headers: {
-        'Authorization': `Bearer ${API_KEY}`,
         'Content-Type': 'application/json'
       },
       body: JSON.stringify({
-        model: "gpt-3.5-turbo",
-        messages: [{ role: "user", content: prompt }],
-        max_tokens: 1000,
-        temperature: 0.3
+        inputText: prompt
       })
     };
 
-    outputText.textContent = ''; // Clear the output text
+    outputText.textContent = '';
+    startLoading();
 
-    startLoading(); // Start the loading animation
-
-    fetch('https://api.openai.com/v1/chat/completions', options)
+    fetch(API_URL, requestOptions)
       .then(response => response.json())
       .then(data => {
-        console.log(data);
         if (outputText) {
-          const formattedOutput = formatOutput(data.choices[0].message.content);
+          const formattedOutput = formatOutput(data.output);
           outputText.innerHTML = '<div contenteditable="true">' + formattedOutput + '</div>';
-          copiedText = formattedOutput; // Store the copied text
+          copiedText = formattedOutput;
 
-          // Show the "Download as PDF" button
           downloadPdfButton.style.display = 'block';
-          downloadPdfButton.addEventListener('click', () => {
-            generatePDF(formattedOutput);
-          });
-
-          // Show the "Copy" button
           copyButton.style.display = 'block';
         }
       })
       .catch(error => {
         console.error(error);
-        // Handle any errors that occur during the API request
       })
       .finally(() => {
-        stopLoading(); // Stop the loading animation
+        stopLoading();
       });
   }
 
   function formatOutput(output) {
-    // Add line breaks between paragraphs
-    output = output.replace(/\n/g, "<br>");
+    if (output === undefined || output === null) {
+      return '';
+    }
 
-    // Apply formatting based on specific patterns
+    output = output.replace(/\n/g, "<br>");
     output = output.replace(/\*\*(.*?)\*\*/g, "<span class='text-bold'>$1</span>");
     output = output.replace(/_(.*?)_/g, "<span class='text-italic'>$1</span>");
 
     return output;
   }
 
-  const PDFDocument = require('pdfkit');
-
-
-  function generatePDF(output) {
-    const url = `/generate-pdf?output=${encodeURIComponent(output)}`;
-    window.open(url, '_blank');
-  }
-
-  const myInput = document.getElementById('myInput');
-
-  myInput.addEventListener('input', () => {
-    // Hide the buttons when input changes
-    downloadPdfButton.style.display = 'none';
-    copyButton.style.display = 'none';
-
-    myInput.style.height = 'auto'; // Reset the height to auto
-    myInput.style.height = `${myInput.scrollHeight}px`; // Set the height to match the content
-  });
-
-  myInput.addEventListener('keydown', (e) => {
-    if (e.key === 'Enter' && !e.shiftKey) {
-      e.preventDefault();
-      myInput.value += '\n';
-    }
-  });
-
   submitButton.addEventListener('click', generateResults);
-
-  // Event listeners for mode selection buttons
 
   differentialButton.addEventListener('click', () => {
     selectedMode = 'differential';
@@ -143,4 +99,20 @@ document.addEventListener('DOMContentLoaded', function() {
     }
   });
 
-}); // Closing brace for DOMContentLoaded event listener
+  const myInput = document.getElementById('myInput');
+
+  myInput.addEventListener('input', () => {
+    downloadPdfButton.style.display = 'none';
+    copyButton.style.display = 'none';
+
+    myInput.style.height = 'auto';
+    myInput.style.height = `${myInput.scrollHeight}px`;
+  });
+
+  myInput.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter' && !e.shiftKey) {
+      e.preventDefault();
+      myInput.value += '\n';
+    }
+  });
+});
